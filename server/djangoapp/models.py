@@ -9,7 +9,11 @@ from django.utils.timezone import now
 # - Description
 # - Any other fields you would like to include in car make model
 # - __str__ method to print a car make object
-
+class CarMake(models.Model):
+    name = models.CharField(max_length=50, default="default make")
+    description = models.CharField(max_length=200)
+    def __str__(self):
+        return self.name
 
 # <HINT> Create a Car Model model `class CarModel(models.Model):`:
 # - Many-To-One relationship to Car Make model (One Car Make has many Car Models, using ForeignKey field)
@@ -19,6 +23,19 @@ from django.utils.timezone import now
 # - Year (DateField)
 # - Any other fields you would like to include in car model
 # - __str__ method to print a car make object
+class CarModel(models.Model):
+    car_make = models.ForeignKey(CarMake, on_delete=models.CASCADE)
+    name = models.CharField(max_length=50, default='default model')
+    dealer_id = models.IntegerField()
+    types = (
+        ('Sedan','Sedan'),
+        ('SUV',"SUV"),
+        ("WAGON","WAGON")
+    )
+    car_types = models.CharField(max_length=50, choices=types)
+    year = models.DateField()
+    def __str__(self):
+        return self.name
 
 
 # <HINT> Create a plain Python class `CarDealer` to hold dealer data
